@@ -1,0 +1,369 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>HTML Education Template</title>
+
+		<!-- Google font -->
+		<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+        <!-- Font Awesome Icon -->
+		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+       <!-- Bootstrap -->
+		<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+		<!-- Font Awesome Icon -->
+		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+    <style>
+
+.my-img{
+opacity:0.1px;
+}
+.profile:hover .my-img {
+opacity: 0.8;
+}
+.profile:hover .my-btn {
+opacity:1;
+  top: %;
+  left: 20%;
+  transform: translate(-150%,10%);
+}
+.my-btn{
+opacity:0;
+  top: %;
+  left: 20%;
+  transform: translate(-200%,20%);
+}
+
+.profile-head {
+ transform: translateY(5rem)
+}
+
+.cover {
+    background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
+    background-size: cover;
+    background-repeat: no-repeat
+}
+
+body {
+    background: linear-gradient(to right, #e96443, #904e95);
+    min-height: 100vh
+}
+
+
+ #button{
+  display:block;
+  margin:20px auto;
+  padding:10px 30px;
+  background-color:#eee;
+  border:solid #ccc 1px;
+  cursor: pointer;
+}
+#overlay{
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height:100%;
+  display: none;
+  background: rgba(0,0,0,0.6);
+}
+.cv-spinner {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px #ddd solid;
+  border-top: 4px #2e93e6 solid;
+  border-radius: 50%;
+  animation: sp-anime 0.8s infinite linear;
+}
+@keyframes sp-anime {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.is-hide{
+  display:none;
+}
+
+    </style>
+    </head>
+	<body>
+
+
+<div id="overlay">
+      <div class="cv-spinner">
+        <span class="spinner"></span>
+      </div>
+  </div>
+
+
+<a href="{% url 'quize' %}" style="max-width:44px;" class="btn btn-light shadow rounded-pill m-1 pull-left fixed-top"><i class="fa fa-arrow-left"></i></a>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+        <button type="button" class="btn-close btn-dark " data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="name" class="col-form-label" >Name :</label>
+            <input type="text" class="form-control" id="name" value="{{user.name}}">
+          </div>
+          <div class="mb-3">
+            <label for="age" class="col-form-label">Age :</label>
+            <input type="number" class="form-control" id="age" value="{{user.age}}">
+          </div>
+
+            Gender
+           <div class="d-flex">
+
+          <div class="form-check pr-3">
+              <input class="form-check-input" type="radio" name="gender" value="male" id="flexRadioDefault1" {% if user.gender == "female" %}checked{% endif %} >
+              <label class="form-check-label" for="flexRadioDefault1">
+               Male
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="gender" value="female" id="flexRadioDefault2" {% if user.gender != "male" %}checked{% endif %} >
+              <label class="form-check-label" for="flexRadioDefault2">
+                Female
+              </label>
+            </div>
+               </div>
+            <span class="text-success" id="update_msg"></span>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-info" id="update_profile_btn">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div  class="modal fade" id="profile_upload" tabindex="-1" aria-labelledby="profile_upload_close" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content bg-light ">
+      <div class="modal-header">
+        <h5 class="modal-title danger" id="profile_upload_close">Upload Image</h5>
+        <button type="button" class="btn-close btn-dark " data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'update-profile-image' %}" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <div class="frame" >
+                <div class="center">
+                    <div class="title ">
+                        <h3>Drop file to upload</h3>
+                    </div>
+
+                    <div class="dropzone">
+                        <center>
+                        <input type="file" name="photo" style="border:2px solid #eee;"/>
+                        </center>
+                    </div>
+
+                    </button>
+
+                </div>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-outline-info">Upload</button>
+      </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="cpass" tabindex="-1" aria-labelledby="cpassLabel" aria-hidden="true">
+u  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cpassLabel">Change Password</h5>
+        <button type="button" class="btn-close btn-dark " data-bs-dismiss="modal" aria-label="Close"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="new_password" class="col-form-label">Password :</label>
+            <input type="text" class="form-control" id="new_password" >
+          </div>
+          <div class="mb-3">
+            <label for="new_confirm_password" class="col-form-label">Confirm Password :</label>
+            <input type="text" class="form-control" id="new_confirm_password" >
+          </div>
+            <span class="text-success" id="change_password_msg"></span>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-info" id="change_password">Update</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+    <div class="row mt-3" style="width:100%;margin-left:0px;margin-right:0px;">
+    <div class="col-md-5 mx-auto">
+        <!-- Profile widget -->
+        <div class="bg-white shadow rounded overflow-hidden">
+            <div class="px-4 pt-0 pb-4 cover">
+                <div class="media align-items-end profile-head">
+                    <div class="profile mr-3">
+                        <img src="{% url 'index' %}media/{{ user.profile_photo }}" alt="..." width="130" class="my-img rounded mb-2 img-thumbnail">
+                        <button data-bs-toggle="modal" data-bs-target="#profile_upload" class="btn btn-link my-btn"><i style="font-size:25px;"  class="text-light h4 fa fa-edit"></i></button>
+                        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-outline-dark btn-sm btn-block">Edit profile</button>
+                    </div>
+                    <div class="media-body mb-5 text-white">
+                        <h4 class="mt-0 mb-0" >{{ user.name }}</h4>
+                        <p class="small mb-4"> Age {{ user.age }}</p>
+                    </div>
+                </div>
+            </div><br><br><br>
+
+            <div class="px-4 py-3">
+               <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h5 class="mb-0">My Personal Infomation</h5>
+                </div>
+                <div class="row  " >
+                    <div class="col-lg-6 mb-2 pr-lg-1 p-2"> <i style="border-radius:100%;font-size:20px;" class=" btn btn-info rounded-pill fa fa-phone "></i> : <strong>  {{user.phone}} </strong></div>
+                    <div class="col-lg-6 mb-2 pr-lg-1 p-2"> <i style="border-radius:100%;font-size:20px;" class=" btn btn-info rounded-pill fa fa-venus-mars "></i> : <strong>  {{user.gender|capfirst}} </strong></div>
+                    <div class="col-lg-6 mb-2 pr-lg-1 p-2" style="font-size:15px;"> <i style="border-radius:100%;font-size:20px;" class=" btn btn-info rounded-pill fa fa-envelope "></i> :   <span style="font-size:15px;">{{user.email}}</span></div>
+                    <div class="col-lg-6 mb-2 pr-lg-1 p-2"> <i style="border-radius:100%;font-size:20px;" class=" btn btn-info rounded-pill fa fa-user "></i> : <strong>  {{user.age}}(age) </strong></div>
+                </div>
+            </div>
+            <div class="py-4 px-4">
+                <h5 class="mb-3 mt-2">OPTIONS</h5>
+                <div class="list-group">
+                  <a href="{% url 'my-quize' %}" class="list-group-item list-group-item-action">My Quize</a>
+                  <a href="{% url 'my-course' %}" class="list-group-item list-group-item-action">My Courses</a>
+                    <a href="{% url 'certificate' %}" class="list-group-item list-group-item-action">My Certificate</a>
+                  <a data-bs-toggle="modal" data-bs-target="#cpass" href="#" class="list-group-item list-group-item-action">Change Password</a>
+                  <a href="{% url 'logout' %}" class="list-group-item list-group-item-action">Logout</a>
+                </div>
+            </div>
+            <div class="py-4 px-4">
+                <h5 class="mb-3 mt-2">My Badge</h5>
+                {% if badge.count == 0 %}
+                <div class="text-danger">You Don't Have Any Badge Yet</div>
+                {% else %}
+                {% for badge in badge  %}
+
+
+                {% if badge.badge == "silver" %}
+                <div class="" style="border:2px solid #eee;">
+                    {{badge.badge}} -->
+					<img style="height:100px;" src="{% url 'index' %}media/badge/silver.png">
+                </div>
+					{% elif badge.badge == "bronze" %}
+                {{badge.badge}} -->
+					<img style="height:100px;" src="{% url 'index' %}media/badge/bronze.png">
+					{% elif badge.badge == "gold" %}
+                {{badge.badge}} -->
+					<img style="height:100px;" src="{% url 'index' %}media/badge/gold.png">
+					{% else %}
+					{% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+		<!-- preloader -->
+		<div id='preloader'><div class='preloader'></div></div>
+		<!-- /preloader -->
+
+
+		<!-- jQuery Plugins -->
+		<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <script >
+    $(document).ready(function(){
+        $("#update_profile_btn").click(function(){
+            var name=$("#name").val()
+            var age=$('#age').val();
+            var gender=$('input:radio[name=gender]:checked').val();
+			   $.ajax({
+                     'url':'{% url 'update-profile' %}',
+                     'method':'GET',
+                     'data':{
+                        'name':name,
+                        'age':age,
+                        'gender':gender,
+                     },
+                     'beforeSend': function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+
+                        $("#overlay").fadeIn(300);　
+                         },
+                     'success':function(data){
+                     $("#overlay").fadeOut(300);
+                      $("#exampleModal").modal('show');
+                          $('#update_msg').text(data.msg);
+                     },
+                });//end of login_ajax
+
+        //code for counter
+   });
+
+
+
+ $("#change_password").click(function(){
+            var new_password=$("#new_password").val()
+            var new_confirm_password=$('#new_confirm_password').val();
+			   $.ajax({
+                     'url':'{% url 'change-password' %}',
+                     'method':'GET',
+                     'data':{
+                        'new_password':new_password,
+                        'new_confirm_password':new_confirm_password,
+                     },
+                     'beforeSend': function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+
+                        $("#overlay").fadeIn(300);　
+                         },
+                     'success':function(data){
+                     $("#overlay").fadeOut(300);
+                      $("#cpass").modal('show');
+                      $('#change_password_msg').text(data.msg);
+                     },
+                });//end of login_ajax
+
+        //code for counter
+   });
+
+
+    });
+</script>
+
+	</body>
+</html>

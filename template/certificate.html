@@ -1,0 +1,232 @@
+{% load static %}
+{% load post_tags %}
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>Your Certificate</title>
+
+		<!-- Google font -->
+		<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+		<!-- Bootstrap -->
+		<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+
+		<!-- Font Awesome Icon -->
+		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+		<!-- Custom stlylesheet -->
+		<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+        <style>
+            .fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+         #button{
+  display:block;
+  margin:20px auto;
+  padding:10px 30px;
+  background-color:#eee;
+  border:solid #ccc 1px;
+  cursor: pointer;
+}
+#overlay{
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height:100%;
+  display: none;
+  background: rgba(0,0,0,0.6);
+}
+.cv-spinner {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px #ddd solid;
+  border-top: 4px #2e93e6 solid;
+  border-radius: 50%;
+  animation: sp-anime 0.8s infinite linear;
+}
+@keyframes sp-anime {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.is-hide{
+  display:none;
+}
+
+    </style>
+
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<style>
+			.fa-facebook,.fa-twitter,.fa-google-plus{
+			padding-top:13px;
+			}
+		</style>
+
+    </head>
+	<body style="">
+
+	<div id="overlay">
+      <div class="cv-spinner">
+        <span class="spinner"></span>
+      </div>
+  </div>
+
+
+    <a href="{% url 'profile' %}" style="max-width:44px;margin-left:20px;" class="facebook btn btn-info shadow  fixed-top"><i class="fa fa-arrow-left"></i></a>
+
+    <!-- Courses -->
+		<div id="courses" class="section" style="margin-top:-60px;">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+					<div class="section-header text-center">
+						<h2>Your Certificates</h2>
+						<p class="lead">Check And Apply Your Certificates.</p>
+						<a href="{% url 'apply-for-certificate' %}" class="btn btn-success">Apply For Cerificate</a>
+					</div>
+				</div>
+				<!-- /row -->
+				{% if certificate %}
+				<!-- courses -->
+				<div id="courses-wrapper">
+
+					<!-- row -->
+					<div class="row">
+						{% for certificate in certificate %}
+								<!-- single course -->
+									<div class="col-md-3 col-sm-6 col-xs-6">
+										<div class="course" style="border:2px solid #eee;padding:15px;">
+                                            <div>Certificate For : <b>{{certificate.course_name}}</b></div>
+											{% if certificate.status == "pending" %}
+											<br>
+											<div>
+													<strong>Response:</strong>
+													<div style="border:2px solid #eee;background:#eee;padding:10px;">
+														Your Certificate Details Are In Under Processing We Will Contact You In Some Time Please Be patiant
+													</div><br>
+												</div>
+											{% else  %}
+												<div>Badge Earned
+													{% if certificate.badge == "silver" %}
+													<img style="height:70px;" src="{% url 'index' %}media/badge/silver.png">
+													{% elif certificate.badge == "bronze" %}
+													<img style="height:70px;" src="{% url 'index' %}media/badge/bronze.png">
+													{% elif certificate.badge == "gold" %}
+													<img style="height:70px;" src="{% url 'index' %}media/badge/gold.png">
+													{% else %}
+													No Badge (Contact To Care)
+													{% endif %}
+
+													<br><br>
+													Congratulation You Have Earned :<b><span style="color:black;">{{certificate.badge}} Badge</span> </b>
+												</div><br>
+												<div>
+													<strong>Performance:</strong>
+													<div style="border:2px solid #eee;background:#eee;padding:5px;">
+														{{certificate.message}}
+													</div><br>
+												</div>
+												<a class="course-title btn btn-info" href="{% url 'index' %}media/{{certificate.certificate_pdf}}" download>Download Certificate</a>
+											{% endif %}
+                                        </div>
+									</div>
+									<!-- /single course -->
+						{% endfor %}
+
+
+
+					</div>
+					<!-- /row -->
+
+				</div>
+				<!-- /courses -->
+	{% else %}
+						<center><h3>You Don't Have Any Certificate</h3></center>
+						{% endif %}
+				<div class="row">
+					<div class="center-btn">
+						<a class="main-button icon-button" href="{% url 'profile' %}">Back To Profile</a>
+					</div>
+				</div>
+
+			</div>
+			<!-- container -->
+
+		</div>
+		<!-- /Courses -->
+
+
+
+
+		<!-- preloader -->
+		<div id='preloader'><div class='preloader'></div></div>
+		<!-- /preloader -->
+
+
+		<!-- jQuery Plugins -->
+		<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+    <script >
+    $(document).ready(function(){
+        $("#update_profile_btn").click(function(){
+            var name=$("#name").val()
+            var age=$('#age').val();
+            var gender=$('input:radio[name=gender]:checked').val();
+			   $.ajax({
+                     'url':'{% url 'update-profile' %}',
+                     'method':'GET',
+                     'data':{
+                        'name':name,
+                        'age':age,
+                        'gender':gender,
+                     },
+                     'beforeSend': function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+
+                        $("#overlay").fadeIn(300);　
+                         },
+                     'success':function(data){
+                     $("#overlay").fadeOut(300);
+                      $("#exampleModal").modal('show');
+                          $('#update_msg').text(data.msg);
+                     },
+                });//end of login_ajax
+
+        //code for counter
+   });
+
+
+
+
+
+
+    });
+</script>
+  </body>
+</html>

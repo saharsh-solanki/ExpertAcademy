@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_data %}
+
+
+		<!-- Home -->
+		<div id="home" class="hero-area">
+
+			<!-- Backgound Image -->
+			<div class="bg-image bg-parallax overlay" style="background-image:url({% static 'img/home-background.jpg' %})"></div>
+			<!-- /Backgound Image -->
+
+			<div class="home-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-8">
+							{% for messages in messages %}
+						<div class="alert-{{messages.tags}}">
+						  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+						  {{messages}}
+						</div>
+						{% endfor %}
+							<h1 class="white-text">Expert Academy Free Online Training Courses</h1>
+							<p class="lead white-text">A Free Online Tranning , Practing , Learning Platform.</p>
+							<a class="main-button icon-button" href="{% url 'register' %}">Get Started!</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /Home -->
+
+		<!-- About -->
+		<div id="about" class="section">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+
+					<div class="col-md-6">
+						<div class="section-header">
+							<h2>Welcome to ExpertAcademy</h2>
+							<p class="lead">We Offer You Everthing Absolutly Free With Certificate.</p>
+						</div>
+
+						<!-- feature -->
+						<div class="feature">
+							<i class="feature-icon fa fa-flask"></i>
+							<div class="feature-content">
+								<h4>Online Courses </h4>
+								<p>Free Courses With Certificates By Experts.</p>
+							</div>
+						</div>
+						<!-- /feature -->
+
+						<!-- feature -->
+						<div class="feature">
+							<i class="feature-icon fa fa-users"></i>
+							<div class="feature-content">
+								<h4>Expert Teachers</h4>
+								<p>We Provide You Best Learning Experience By Expert Teacher.</p>
+							</div>
+						</div>
+						<!-- /feature -->
+
+						<!-- feature -->
+						<div class="feature">
+							<i class="feature-icon fa fa-comments"></i>
+							<div class="feature-content">
+								<h4>Community</h4>
+								<p>Our Community Is Very ...............</p>
+							</div>
+						</div>
+						<!-- /feature -->
+
+					</div>
+
+					<div class="col-md-6">
+						<div class="about-img">
+							<img src="{% static 'img/about.png' %}" alt="">
+						</div>
+					</div>
+
+				</div>
+				<!-- row -->
+
+			</div>
+			<!-- container -->
+		</div>
+		<!-- /About -->
+
+		<!-- Courses -->
+		<div id="courses" class="section">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+					<div class="section-header text-center">
+						<h2>Explore Courses</h2>
+						<p class="lead">Recently Added Course You Must Learn.</p>
+					</div>
+				</div>
+				<!-- /row -->
+
+				<!-- courses -->
+				<div id="courses-wrapper">
+
+					<!-- row -->
+					<div class="row">
+
+						{% for course in course_data %}
+						<!-- single course -->
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<div class="course">
+								<a href="{% url 'course-detail' course_slug=course.course_slug  %}" class="course-img">
+									<img src="media/{{ course.course_photo }}" alt="">
+									<i class="course-link-icon fa fa-link"></i>
+								</a>
+								<a class="course-title" href="{% url 'course-detail' course_slug=course.course_slug  %}">{{ course.course_name }}</a>
+								<div class="course-details">
+									<span class="course-category">Business</span>
+									<span class="course-price course-free">Free</span>
+								</div>
+							</div>
+						</div>
+						<!-- /single course -->
+						{% endfor %}
+
+					</div>
+					<!-- /row -->
+
+				</div>
+				<!-- /courses -->
+
+				<div class="row">
+					<div class="center-btn">
+						<a class="main-button icon-button" href="{% url 'course' %}">More Courses</a>
+					</div>
+				</div>
+
+			</div>
+			<!-- container -->
+
+		</div>
+		<!-- /Courses -->
+
+		<!-- Call To Action -->
+		<div id="cta" class="section">
+
+			<!-- Backgound Image -->
+			<div class="bg-image bg-parallax overlay" style="background-image:url({% static 'img/cta1-background.jpg' %})"></div>
+			<!-- /Backgound Image -->
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+
+					<div class="col-md-6">
+						<h2 class="white-text">Get Started Now.</h2>
+						<p class="lead white-text">Create You Account And Start Learning , practicing Start You Coding Carrier .</p>
+						<a class="main-button icon-button" href="{% url 'register' %}">Get Started!</a>
+					</div>
+
+				</div>
+				<!-- /row -->
+
+			</div>
+			<!-- /container -->
+
+		</div>
+		<!-- /Call To Action -->
+
+		<!-- Why us -->
+		<div id="why-us" class="section">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+					<div class="section-header text-center">
+						<h2>Why ExpertAcademy</h2>
+						<p class="lead">We Provide You Best Content That Help You .</p>
+					</div>
+
+					<!-- feature -->
+					<div class="col-md-4">
+						<div class="feature">
+							<i class="feature-icon fa fa-flask"></i>
+							<div class="feature-content">
+								<h4>Online Courses</h4>
+								<p>Free Online Tranning Course With Certificates.</p>
+							</div>
+						</div>
+					</div>
+					<!-- /feature -->
+
+					<!-- feature -->
+					<div class="col-md-4">
+						<div class="feature">
+							<i class="feature-icon fa fa-users"></i>
+							<div class="feature-content">
+								<h4>Expert Teachers</h4>
+								<p>10+ Expert Teacher With Great Experiece.</p>
+							</div>
+						</div>
+					</div>
+					<!-- /feature -->
+
+					<!-- feature -->
+					<div class="col-md-4">
+						<div class="feature">
+							<i class="feature-icon fa fa-comments"></i>
+							<div class="feature-content">
+								<h4>Community</h4>
+								<p>We Are Always There For You .</p>
+							</div>
+						</div>
+					</div>
+					<!-- /feature -->
+
+				</div>
+				<!-- /row -->
+
+				<hr class="section-hr">
+
+				<!-- row -->
+				<div class="row">
+
+					<div class="col-md-6">
+						<h3>See A Demo Of Our Website .</h3>
+						<p class="lead">What We Offer You .</p>
+						<p>We Offer You Free Online Tranning Courses With Certificate , Pratice Quizes , Bloges , Complete Guidence For Carrier .  </p>
+					</div>
+
+					<div class="col-md-5 col-md-offset-1">
+						<a class="about-video" href="#">
+							<img src="{% static 'img/about-video.jpg'%}" alt="">
+							<i class="play-icon fa fa-play"></i>
+						</a>
+					</div>
+
+				</div>
+				<!-- /row -->
+
+			</div>
+			<!-- /container -->
+
+		</div>
+		<!-- /Why us -->
+
+		<!-- Contact CTA -->
+		<div id="contact-cta" class="section">
+
+			<!-- Backgound Image -->
+			<div class="bg-image bg-parallax overlay" style="background-image:url({% static 'img/cta2-background.jpg' %})"></div>
+			<!-- Backgound Image -->
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+
+					<div class="col-md-8 col-md-offset-2 text-center">
+						<h2 class="white-text">Contact Us</h2>
+						<p class="lead white-text">We Are Always There For Contact  As Between 9:00 AM to 7:00 PM.</p>
+						<a class="main-button icon-button" href="{% url 'contact-us' %}">Contact Us Now</a>
+					</div>
+
+				</div>
+				<!-- /row -->
+
+			</div>
+			<!-- /container -->
+
+		</div>
+		<!-- /Contact CTA -->
+
+	{% endblock body_data %}

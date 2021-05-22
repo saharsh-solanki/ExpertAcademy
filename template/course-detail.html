@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_data %}
+
+<style>
+	.mts{
+	background: #9696f3;
+	color:white;
+	padding:10px;
+	float:right;
+    position: absolute;
+    padding-left:14px;
+    padding-right:16px;
+	  top: 14px;
+	  right: 21px;
+	  font-size:20px;
+		margin-right:7px;
+
+	}
+	.frm{
+	width:100%;
+	height:100%;
+	}
+</style>
+<!-- Hero-area -->
+		<div class="hero-area section">
+
+			<!-- Backgound Image -->
+			<div class="bg-image bg-parallax overlay" style="background-image:url(/static/img/page-background.jpg)"></div>
+			<!-- /Backgound Image -->
+        <div class="container">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1 text-center">
+						{% for messages in messages %}
+						<div class="alert-{{messages.tags}}">
+						  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+						  {{messages}}
+						</div>
+						{% endfor %}
+						<ul class="hero-area-tree">
+							<li><a href="{% url 'index' %}">Home</a></li>
+
+							<li><a href="{% url 'course' %}">Courses</a></li>
+							<li>{{ course_data.course_name }}</li>
+						</ul>
+						<h1 class="white-text">{{ course_data.course_name }}</h1>
+
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /Hero-area -->
+
+
+
+
+      <!-- Blog -->
+		<div id="blog" class="section">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+
+					<!-- main blog -->
+					<div id="main" class="col-md-9">
+
+						<!-- blog post -->
+						<div class="blog-post">
+							<div class="section-header">
+
+										<!-- row -->
+							<div class="row">
+
+								<div class="col-md-5">
+									<div style="height:200px;width:95%px;max-width:350px;">
+										<iframe src="https://drive.google.com/file/d/{{course_data.preview_video_id}}/preview" thumbnail="1" class="frm" allow="autoplay" allowfullscreen></iframe>
+								      <i class="fa fa-facebook mts" style=""></i>
+									</div>
+                                </div>
+
+								<div class="col-md-5 col-md-offset-1">
+									<h3>Preview Course</h3>
+									<p class="lead">Small Introduction About The Course.</p>
+									<p>Get Some Information About The Course i.e. What Topic Will Be Covered In This Course . How Teacher Is Teaching etc</p>
+								</div>
+
+
+
+							</div>
+							<!-- /row -->
+											<br><br>
+										<h2>What You Will Learn </h2>
+										<blockquote>
+											<p style="margin-top:-14px;" class="lead">All Lesson That Are Taught In This Course</p>
+										</blockquote>
+								<ol>
+								{% for lesson in lesson %}
+												<li style="border-left:5px solid #02bb8c;margin:8px;padding:5px;background:#eee;"> {{ lesson.lesson_name }}</li>
+								{% endfor %}
+									</ol>
+							 <br><br>
+							<!-- row -->
+							<div class="row">
+
+								<div class="col-md-5">
+									<h2>Requirements </h2>
+									<ul >
+										{% for course_requirements in course_requirements %}
+										<li style="padding:3px;">{{ course_requirements.requirement }}</li>
+										{% endfor %}
+									</ul>
+								</div>
+
+
+								<div class="col-md-5 ">
+									<h2>What You Will Get  </h2>
+									<ul >
+										{% for access_to in access_to %}
+										<li style="padding:3px;">{{access_to}}</li>
+										{% endfor %}
+									</ul>
+								</div>
+
+							</div>
+							<!-- /row -->
+								<a class="main-button icon-button" href="{% url 'enroll-course' course_name=course_data.id %}">Enroll Course</a>
+
+													    <br>
+						<!-- blog comments -->
+						<div class="blog-comments">
+							<h3>{{comment.count}} comments</h3>
+							{% for comments in comment %}
+							<!-- single comment -->
+							<div class="media">
+								<div class="media-left">
+									<img src="/media/profile_img/icon_male.png" alt="">
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">{{comments.user_name}}</h4>
+									<p>{{comments.comment}}</p>
+									<div class="date-reply"><span>{{ comments.date }}</span> <a style="cursor:pointer;" onclick="show_comment_reply('{{comments.id}}')" class="reply">View Reply</a></div>
+								</div>
+								<div id="{{comments.id}}" style="display:none;border:1px solid #eee;padding:20px;margin:5px;">
+									<h3>Replys</h3>
+									{% for comments_reply in comment_reply %}
+									{% ifequal comments_reply.comment_id comments.id|stringformat:"i" %}
+									<!-- comment reply -->
+									<div class="media">
+										<div class="media-left">
+											<img src="/media/profile_img/icon_male.png" alt="">
+										</div>
+										<div class="media-body">
+											<h4 class="media-heading">{{comments_reply.user_name}}</h4>
+											<p>{{comments_reply.comment}}</p>
+											<div class="date-reply"><span>{{ comments_reply.date }}</span></div>
+										</div>
+
+									</div>
+									<!-- /comment reply -->
+									{% endifequal %}
+									{% endfor %}
+									<!-- blog reply form -->
+										<div class="blog-reply-form">
+											<h3>Reply This Comments</h3>
+											<form action="{% url 'do_course_comment_reply' %}"  method="POST">
+												{% csrf_token %}
+												<input type="hidden" name="comment_id" value="{{comments.id}}">
+												<input type="hidden" name="course_slug" value="{{course_data.course_slug}}">
+												<input class="input name-input" style="border-color:black;" type="text" name="name" placeholder="Name">
+												<input class="input email-input" style="border-color:black;" type="email" name="email" placeholder="Email">
+												<textarea class="input" name="message" style="border-color:black;" placeholder="Enter your Message"></textarea>
+												<button type="submit" class="main-button icon-button">Submit</button>
+											</form>
+										</div>
+										<!-- /blog reply form -->
+								</div>
+							</div>
+							<!-- /single comment -->
+
+							{% endfor %}
+
+							<!-- blog reply form -->
+							<div class="blog-reply-form">
+								<h3>Ask Something</h3>
+								<form action="{% url 'do_course_comment' %}"  method="POST">
+									{% csrf_token %}
+									<input type="hidden" name="course_id" value="{{course_data.id}}">
+									<input type="hidden" name="course_slug" value="{{course_data.course_slug}}">
+									<input class="input name-input" type="text" name="name" placeholder="Name">
+									<input class="input email-input" type="email" name="email" placeholder="Email">
+									<textarea class="input" name="message" placeholder="Enter your Message"></textarea>
+									<button type="submit" class="main-button icon-button">Submit</button>
+								</form>
+							</div>
+							<!-- /blog reply form -->
+
+						</div>
+						<!-- /blog comments -->
+
+
+
+						</div>
+						</div>
+						<!-- /blog post -->
+						<br>
+
+
+						<!-- blog share -->
+						<div class="blog-share">
+							<h4>Share This Course:</h4>
+							<a href="https://www.facebook.com/sharer/sharer.php?u={{ request.META.HTTP_HOST }}/course-detail/{{course_data.course_slug}}&t=Free course of {{ course_data.course_name }}" class="facebook"><i class="fa fa-facebook"></i></a>
+							<a href="https://twitter.com/share?url={{ request.META.HTTP_HOST }}/course-detail/{{course_data.course_slug}}&text=Free course of {{ course_data.course_name }}" class="twitter"><i class="fa fa-twitter"></i></a>
+							<a href="https://plus.google.com/share?url={{ request.META.HTTP_HOST }}/course-detail/{{course_data.course_slug}}" class="google-plus"><i class="fa fa-google-plus"></i></a>
+						</div>
+						<!-- /blog share -->
+
+					</div>
+					<!-- /main blog -->
+
+					<!-- aside blog -->
+					<div id="aside" class="col-md-3">
+
+						<!-- search widget -->
+						<div class="widget search-widget">
+							<form action="{% url 'course' %}?">
+								<input class="input" type="text" name="search">
+								<button><i class="fa fa-search"></i></button>
+							</form>
+						</div>
+						<!-- /search widget -->
+
+						<!-- category widget -->
+						<div class="widget category-widget">
+							<h3>Categories</h3>
+							{% for category in category %}
+							<a class="category" href="{% url 'course' %}?category={{category.category_name|slugify}}&id={{category.id}}">{{category.category_name}}</a>
+							{% endfor %}
+						</div>
+						<!-- /category widget -->
+
+						<!-- posts widget -->
+						<div class="widget posts-widget">
+							<h3>Recents course</h3>
+							{% for recent_course in recent_course %}
+							<!-- single posts -->
+							<div class="single-post">
+								<a class="single-post-img" href="{% url 'course-detail' course_slug=recent_course.course_slug %}">
+									<img src="/media/{{ recent_course.course_photo }}" alt="">
+								</a>
+								<a href="% url 'course_detail' course_slug=recent_course.course_slug %}">{{ recent_course.course_name}}.</a>
+							</div>
+							<!-- /single posts -->
+							{% endfor %}
+						</div>
+						<!-- /posts widget -->
+
+
+
+					</div>
+					<!-- /aside blog -->
+
+				</div>
+				<!-- row -->
+
+			</div>
+			<!-- container -->
+
+		</div>
+
+<script>
+
+	function show_comment_reply(id){
+	 var nid='#'+id;
+	 console.log(nid);
+         $(nid).toggle();
+      }
+
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+{% endblock body_data %}

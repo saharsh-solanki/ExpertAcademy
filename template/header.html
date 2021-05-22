@@ -1,0 +1,44 @@
+{% load static %}
+<!-- Header -->
+		<header id="header" class="transparent-nav">
+			<div class="container">
+
+				<div class="navbar-header">
+					<!-- Logo -->
+					<div class="navbar-brand">
+						<a class="logo "  href="index.html">
+							<h4 style="color:white;">ExpertAcademy</h4>
+						</a>
+					</div>
+					<!-- /Logo -->
+
+					<!-- Mobile toggle -->
+					<button class="navbar-toggle">
+						<span></span>
+					</button>
+					<!-- /Mobile toggle -->
+				</div>
+
+				<!-- Navigation -->
+				<nav id="nav">
+					<ul class="main-menu nav navbar-nav navbar-right">
+						<li><a href="{% url 'index' %}">Home</a></li>
+						<li><a href="{% url 'course' %}">Courses</a></li>
+						<li><a href="{% url 'blog' %}">Blog</a></li>
+						<li><a href="{% url 'quize' %}">Quize</a></li>
+						<li><a href="{% url 'about-us' %}">About</a></li>
+						<li><a href="{% url 'contact-us' %}">Contact</a></li>
+						<li>
+							{% if 'user_email' in request.session %}
+							<a  href="{% url 'profile' %}"><img style="margin-top:-5px;width:30px;height:30px;border-radius:100px;" src="{% static 'img/icon_male.png' %}" /></a>
+		                    {% else %}
+							<a href="{% url 'login' %}">Login</a>
+							{% endif %}
+						</li>
+					</ul>
+				</nav>
+				<!-- /Navigation -->
+
+			</div>
+		</header>
+		<!-- /Header -->

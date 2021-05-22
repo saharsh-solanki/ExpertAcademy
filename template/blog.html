@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_data %}
+
+		<!-- Hero-area -->
+		<div class="hero-area section">
+
+			<!-- Backgound Image -->
+			<div class="bg-image bg-parallax overlay" style="background-image:url(/static/img/page-background.jpg)"></div>
+			<!-- /Backgound Image -->
+
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1 text-center">
+						<ul class="hero-area-tree">
+							{% for messages in messages %}
+						<div class="alert-{{messages.tags}}">
+						  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+						  {{messages}}
+						</div>
+						{% endfor %}
+							<li><a href="index.html">Home</a></li>
+							<li>Blog</li>
+						</ul>
+						<h1 class="white-text">Blog Page</h1>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /Hero-area -->
+
+		<!-- Blog -->
+		<div id="blog" class="section">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+
+					<!-- main blog -->
+					<div id="main" class="col-md-9">
+
+						<!-- row -->
+						<div class="row">
+							{% if blog_data.count == 0 %}
+							<div style="background:#eee; padding:10px;border-left:4px solid red;"> No Blog Available </div>
+							{% endif %}
+							{% for blog in blog_data %}
+							<!-- single blog -->
+							<div class="col-md-6">
+								<div class="single-blog">
+									<div class="blog-img">
+										<a href="{% url 'blog_post' blog_name=blog.blog_slug %}">
+											<img src="{% url 'index' %}media/{{ blog.blog_photo }}" alt="">
+										</a>
+									</div>
+									<h4><a href="{% url 'blog_post' blog_name=blog.blog_slug %}">{{ blog.blog_tittle }}</a></h4>
+									<div class="blog-meta">
+										<span class="blog-meta-author">By: <a href="#">J{{ blog.blog_by }}</a></span>
+										<div class="pull-right">
+											<span>{{ blog.date|date:"d M Y" }}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /single blog -->
+							{% endfor %}
+
+						</div>
+						<!-- /row -->
+
+						<!-- row -->
+						<div class="row">
+
+
+
+						</div>
+						<!-- /row -->
+					</div>
+					<!-- /main blog -->
+
+					<!-- aside blog -->
+					<div id="aside" class="col-md-3">
+
+						<!-- search widget -->
+						<div class="widget search-widget">
+							<form>
+								<input class="input" type="text" name="search">
+								<button><i class="fa fa-search"></i></button>
+							</form>
+						</div>
+						<!-- /search widget -->
+
+						<!-- category widget -->
+						<div class="widget category-widget">
+							<h3>Categories</h3>
+							{% for category in category %}
+							<a class="category" href="{% url 'blog' %}?category={{category.category_name|slugify}}&id={{category.id}}">{{category.category_name}}</a>
+							{% endfor %}
+						</div>
+						<!-- /category widget -->
+
+						<!-- posts widget -->
+						<div class="widget posts-widget">
+							<h3>Recents Posts</h3>
+
+							{% for recent_blog in recent_blog %}
+							<!-- single posts -->
+							<div class="single-post">
+								<a class="single-post-img" href="{% url 'blog_post' blog_name=recent_blog.blog_slug %}">
+									<img src="{% url 'index' %}media/{{recent_blog.blog_photo}}" alt="">
+								</a>
+								<a href="{% url 'blog_post' blog_name=recent_blog.blog_slug %}"">{{ recent_blog.blog_name }}</a>
+								<p><small>{{ recent_blog.date|date:"d M ,Y" }}</small></p>
+							</div>
+							<!-- /single posts -->
+							{% endfor %}
+
+
+						</div>
+						<!-- /posts widget -->
+
+						<!-- tags widget -->
+						<div class="widget tags-widget">
+							<h3>Tags</h3>
+							<a class="tag" href="#">Web</a>
+							<a class="tag" href="#">Photography</a>
+							<a class="tag" href="#">Css</a>
+							<a class="tag" href="#">Responsive</a>
+							<a class="tag" href="#">Wordpress</a>
+							<a class="tag" href="#">Html</a>
+							<a class="tag" href="#">Website</a>
+							<a class="tag" href="#">Business</a>
+						</div>
+						<!-- /tags widget -->
+
+					</div>
+					<!-- /aside blog -->
+
+				</div>
+				<!-- row -->
+
+			</div>
+			<!-- container -->
+
+		</div>
+		<!-- /Blog -->
+{% endblock body_data  %}

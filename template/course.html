@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_data %}
+<!-- Hero-area -->
+		<div class="hero-area section">
+
+			<!-- Backgound Image -->
+			<div class="bg-image bg-parallax overlay" style="background-image:url(/static/img/page-background.jpg)"></div>
+			<!-- /Backgound Image -->
+        <div class="container">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1 text-center">
+						{% for messages in messages %}
+						<div class="alert-{{messages.tags}}">
+						  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+						  {{messages}}
+						</div>
+						{% endfor %}
+						<ul class="hero-area-tree">
+							<li><a href="{% url 'index' %}">Home</a></li>
+
+							<li>Courses</li>
+						</ul>
+						<h1 class="white-text">Start Your Learning Journey</h1>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /Hero-area -->
+
+                    <!-- search widget -->
+					<div class="container " style="padding-top:30px;">
+						<div class=" widget search-widget" style="">
+							<form action="{% url 'course' %}">
+								<input placeholder="Search For A Course" class="input" type="text" name="search" style="border:2px solid #FF6700;">
+								<button><i class="fa fa-search" style="color:#FF6700;"></i></button>
+							</form>
+						</div>
+					</div>
+						<!-- /search widget -->
+
+      <!-- Courses -->
+		<div id="courses" class="section" style="margin-top:-0px;">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+					<div class="section-header text-center">
+						<h2>Explore Courses</h2>
+						<p class="lead">Choose The Best Course You Want Learning.</p>
+					</div>
+				</div>
+				<!-- /row -->
+
+				<!-- courses -->
+				<div id="courses-wrapper">
+
+					<!-- row -->
+					<div class="row">
+						{% if course_data.count == 0 %}
+							<div style="background:#eee; padding:10px;border-left:4px solid red;"> No Course Available You Can Request For This Course By Conatct Us Page </div>
+							{% endif %}
+						{% for course in course_data %}
+						<!-- single course -->
+						<div class="col-md-3 col-sm-6 col-xs-6">
+							<div class="course">
+								<a href="{% url 'course-detail' course_slug=course.course_slug  %}" class="course-img">
+									<img src="media/{{ course.course_photo }}" alt="">
+								</a>
+								<a class="course-title" href="{% url 'course-detail' course_slug=course.course_slug  %}">{{ course.course_name }}</a>
+								<div class="course-details">
+									<span class="course-category">Business</span>
+									<span class="course-price course-free">Free</span>
+								</div>
+							</div>
+						</div>
+						<!-- /single course -->
+						{% endfor %}
+                      </div>
+					<!-- /row -->
+
+
+				</div>
+				<!-- /courses -->
+
+				<div class="row">
+					<div class="center-btn">
+						<a class="main-button icon-button" href="{% url 'course' %}">More Courses</a>
+					</div>
+				</div>
+
+			</div>
+			<!-- container -->
+
+		</div>
+		<!-- /Courses -->
+
+     </div>
+     <!-- /hero section-->
+
+{% endblock body_data %}

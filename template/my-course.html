@@ -1,0 +1,122 @@
+{% load static %}
+{% load post_tags %}
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>HTML Education Template</title>
+
+		<!-- Google font -->
+		<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+		<!-- Bootstrap -->
+		<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+
+		<!-- Font Awesome Icon -->
+		<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+		<!-- Custom stlylesheet -->
+		<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+        <style>
+            .fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+        </style>
+
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<style>
+			.fa-facebook,.fa-twitter,.fa-google-plus{
+			padding-top:13px;
+			}
+		</style>
+
+    </head>
+	<body style="">
+
+    <a href="{% url 'profile' %}" style="max-width:44px;margin-left:20px;" class="facebook btn btn-info shadow  fixed-top"><i class="fa fa-arrow-left"></i></a>
+
+    <!-- Courses -->
+		<div id="courses" class="section" style="margin-top:-60px;">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+					<div class="section-header text-center">
+						<h2>Your Courses</h2>
+						<p class="lead">Resume Your Learning.</p>
+					</div>
+				</div>
+				<!-- /row -->
+
+				<!-- courses -->
+				<div id="courses-wrapper">
+
+					<!-- row -->
+					<div class="row">
+						{% for user_course in user_course %}
+							{% for course_data in course_data %}
+								{% ifequal user_course.course_id course_data.id|tostr %}
+								<!-- single course -->
+									<div class="col-md-3 col-sm-6 col-xs-6">
+										<div class="course">
+											<a href="{% url 'learn-course' course_slug=course_data.course_slug %}" class="course-img">
+												<img src="{% url 'index'%}media/{{course_data.course_photo}}" alt="">
+											</a>
+											<a class="course-title pull-right" href="{% url 'learn-course' course_slug=course_data.course_slug %}">{{course_data.course_name }}</a>
+											<a class="btn btn-primary " href="{% url 'learn-course' course_slug=course_data.course_slug %}">Resume Learning</a>
+										</div>
+									</div>
+									<!-- /single course -->
+								{% endifequal %}
+							{% endfor %}
+						{% endfor %}
+
+					</div>
+					<!-- /row -->
+
+				</div>
+				<!-- /courses -->
+
+				<div class="row">
+					<div class="center-btn">
+						<a class="main-button icon-button" href="{% url 'profile' %}">Back To Profile</a>
+					</div>
+				</div>
+
+			</div>
+			<!-- container -->
+
+		</div>
+		<!-- /Courses -->
+
+
+
+
+		<!-- preloader -->
+		<div id='preloader'><div class='preloader'></div></div>
+		<!-- /preloader -->
+
+
+		<!-- jQuery Plugins -->
+		<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+	    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+  </body>
+</html>

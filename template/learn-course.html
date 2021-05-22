@@ -1,0 +1,243 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_data %}
+{% for current_lesson in current_lesson %}
+<script>
+
+	function show_comment_reply(id){
+	 var nid='#'+id;
+	 console.log(nid);
+         $(nid).toggle();
+      }
+
+</script>
+<!-- Hero-area -->
+		<div class="hero-area section">
+
+			<!-- Backgound Image -->
+			<div class="bg-image bg-parallax overlay" style="background-image:url(/static/img/page-background.jpg)">
+			</div>
+			<!-- /Backgound Image -->
+        <div class="container">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1 text-center">
+						{% for messages in messages %}
+						<div class="alert-{{messages.tags}}">
+						  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+						  {{messages}}
+						</div>
+						{% endfor %}
+
+						<ul class="hero-area-tree">
+
+							<li><a href="index.html">Home</a></li>
+
+							<li>Courses</li>
+
+							<li>{{ current_lesson.lesson_name }}</li>
+
+						</ul>
+						<h1 class="white-text">{{ current_lesson.lesson_name }}</h1>
+						<ul class="blog-post-meta">
+							<li class="blog-meta-author">By : <a href="#">John Doe</a></li>
+
+							<li class="blog-meta-comments"><a href="#"><i class="fas fa-video"></i>  &#128247; 35</a></li>
+						</ul>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<!-- /Hero-area -->
+
+
+      <!-- Blog -->
+		<div id="blog" class="section">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+
+					<!-- main blog -->
+					<div id="main" class="col-md-9">
+
+						<!-- blog post -->
+						<div class="blog-post">
+							<div class="section-header">
+
+										<!-- row -->
+							<div class="row">
+
+								<div class="col-md-5">
+										<iframe src="https://drive.google.com/file/d/1eLkQGxMOlsDo0KLdbeGwY1Esc05Zkqll/preview" style="width:100%;max-width:350px;" height="200"></iframe>
+								</div>
+
+								<div class="col-md-5 col-md-offset-1">
+									<h1 class="lead"><strong>Lesson {{ ls.number  }} : {{ current_lesson.lesson_name }}</strong></h1>
+
+								     <a  class="btn btn-primary facebook icon-button" style="margin:10px;width:150px;border:none;border-radius:10px;" target="_blank" href="{{current_lesson.lesson_code}}">Get Code</a>
+									<a data-bs-toggle="collapse" href="#ShowDescription" role="button" aria-expanded="false" aria-controls="collapseExample" class="btn btn-danger facebook icon-button" style="margin:10px;width:190px;border:none;border-radius:10px;" href="#">Show Description</a>
+
+								</div>
+
+
+							</div>
+							<!-- /row -->
+								<br>
+								<hr>
+								<div class="collapse bg-dark text-white" id="ShowDescription" style="background:#eee;color:black;border-radius:10px;padding:15px;">
+								  <p>
+									 {{ current_lesson.lesson_description }}
+								  </p>
+								</div>
+
+								<!-- pagination -->
+							<div class="">
+								<div class="post-pagination">
+									{% if ls.has_previous %}
+									<a href="?page={{ ls.previous_page_number }}" class="pagination-back pull-left">Back</a>
+									{% endif %}
+									{% if ls.has_next %}
+									<a href="?page={{ ls.next_page_number }}" class="pagination-next pull-right">Next</a>
+									{% else %}
+									<a href="{% url 'mark-as-completed' %}?lesson_id={{current_lesson.id}}" class="pagination-next pull-right">Mark As Completed</a>
+								    {% endif %}
+								</div>
+							</div>
+							<!-- pagination -->
+
+
+
+					    <br>
+						<!-- blog comments -->
+						<div class="blog-comments">
+							<h3>{{comment.count}} comments</h3>
+							{% for comments in comment %}
+							<!-- single comment -->
+							<div class="media">
+								<div class="media-left">
+									<img src="/media/profile_img/icon_male.png" alt="">
+								</div>
+								<div class="media-body">
+									<h4 class="media-heading">{{comments.user_name}}</h4>
+									<p>{{comments.comment}}</p>
+									<div class="date-reply"><span>{{ comments.date }}</span> <a style="cursor:pointer;"  onclick="show_comment_reply('{{comments.id}}')" class="reply">View Reply</a></div>
+								</div>
+								<div id="{{comments.id}}" style="display:none;border:1px solid #eee;padding:20px;margin:5px;">
+									<h3>Replys</h3>
+									{% for comments_reply in comment_reply %}
+									{% ifequal comments_reply.lesson_comment_id comments.id|stringformat:"i" %}
+									<!-- comment reply -->
+									<div class="media">
+										<div class="media-left">
+											<img src="/media/profile_img/icon_male.png" alt="">
+										</div>
+										<div class="media-body">
+											<h4 class="media-heading">{{comments_reply.user_name}}</h4>
+											<p>{{comments_reply.comment}}</p>
+											<div class="date-reply"><span>{{ comments_reply.date }}</span></div>
+										</div>
+
+									</div>
+									<!-- /comment reply -->
+									{% endifequal %}
+									{% endfor %}
+									<!-- blog reply form -->
+										<div class="blog-reply-form">
+											<h3>Reply This Comments</h3>
+											<form action="{% url 'do_lesson_comment_reply' %}"  method="POST">
+												{% csrf_token %}
+												<input type="hidden" name="lesson_comment_id" value="{{comments.id}}">
+												<input type="hidden" name="page" value="{{ls.number}}">
+												<input type="hidden" name="course_slug" value="{{course_slug}}">
+									            <input class="input name-input" style="border-color:black;" type="text" name="name" placeholder="Name">
+												<input class="input email-input" style="border-color:black;" type="email" name="email" placeholder="Email">
+												<textarea class="input" name="message" style="border-color:black;" placeholder="Enter your Message"></textarea>
+												<button type="submit" class="main-button icon-button">Submit</button>
+											</form>
+										</div>
+										<!-- /blog reply form -->
+								</div>
+							</div>
+							<!-- /single comment -->
+
+							{% endfor %}
+
+							<!-- blog reply form -->
+							<div class="blog-reply-form">
+								<h3>Ask Something</h3>
+								<form action="{% url 'do_lesson_comment' %}"  method="POST">
+									{% csrf_token %}
+									<input type="hidden" name="lesson_id" value="{{current_lesson.id}}">
+									<input type="hidden" name="page" value="{{ls.number}}">
+									<input type="hidden" name="course_slug" value="{{course_slug}}">
+									<input class="input name-input" type="text" name="name" placeholder="Name">
+									<input class="input email-input" type="email" name="email" placeholder="Email">
+									<textarea class="input" name="message" placeholder="Enter your Message"></textarea>
+									<button type="submit" class="main-button icon-button">Submit</button>
+								</form>
+							</div>
+							<!-- /blog reply form -->
+
+						</div>
+						<!-- /blog comments -->
+
+						</div>
+						</div>
+						<!-- /blog post -->
+
+
+
+					</div>
+					<!-- /main blog -->
+
+					<!-- aside blog -->
+					<div id="aside" class="col-md-3">
+
+						<!-- posts widget -->
+						<div class="widget posts-widget">
+							<h3>Upcoming Toutorials</h3>
+
+							{% for lesson_data in lesson_data %}
+							<!-- single posts -->
+							<div class="single-post">
+								{% for key,val in up_lesson.items %}
+								{% ifequal lesson_data.id key %}
+								<a class="about-video single-post-img" href="?page={{val}}">
+
+									<img src="{{ lesson_data.lesson_photo.url }}" alt="">
+									<i class="play-icon fa fa-play" style="line-height: 30px;font-size:10px;width:30px;height:30px;"></i>
+								</a>
+								<a href="?page={{val}}">{{ lesson_data.lesson_name }}.</a>
+								    {% endifequal %}
+									{% endfor %}
+							</div>
+							<!-- /single posts -->
+							{% endfor %}
+
+
+						</div>
+						<!-- /posts widget -->
+
+
+
+					</div>
+					<!-- /aside blog -->
+
+				</div>
+				<!-- row -->
+
+
+			</div>
+			<!-- container -->
+
+
+		</div>
+		<!-- /Blog -->
+
+
+{% endfor %}
+{% endblock body_data %}

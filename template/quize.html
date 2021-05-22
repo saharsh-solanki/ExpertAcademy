@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body_data %}
+<style>
+	.m-1{
+	margin:10px;
+	}
+	.shadow{
+	border:0.7px solid #eee;box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+	}
+
+</style>
+
+    <!-- Hero-area -->
+		<div class="hero-area section" >
+
+			<!-- Backgound Image -->
+			<div class="bg-image bg-parallax overlay" style="background-image:url(/static/img/page-background.jpg)"></div>
+			<!-- /Backgound Image -->
+
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1 text-center">
+						{% for messages in messages %}
+						<div class="alert-{{messages.tags}}">
+						  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+						  {{messages}}
+						</div>
+						{% endfor %}
+						<ul class="hero-area-tree">
+							<li><a href="index.html">Home</a></li>
+							<li>Quize</li>
+						</ul>
+						<h1 class="white-text">Start Practicing Quize </h1>
+					</div>
+
+				</div>
+				<!-- search widget -->
+					<div class="container" style="padding-top:30px;color:white;">
+						<div class=" widget search-widget" style="color:white;">
+							<form>
+								<input placeholder="Search For A Quize" class="input" type="text" name="search" style="background:white;color:black;border:2px solid #FF6700;">
+								<button><i class="fa fa-search" style="color:#FF6700;"></i></button>
+							</form>
+						</div>
+					</div>
+						<!-- /search widget -->
+
+
+			</div>
+
+		</div>
+		<!-- /Hero-area -->
+
+
+
+
+<!-- Courses -->
+		<div id="courses" class="section center" style="">
+
+			<!-- container -->
+			<div class="container">
+
+				<!-- row -->
+				<div class="row">
+					<div class="section-header text-center">
+						<h2>Explore Quizes</h2>
+					</div>
+				</div>
+				<!-- /row -->
+
+				<!-- courses -->
+				<div id="courses-wrapper" style="margin:15px;margin-right:35px;">
+
+					<!-- row -->
+					<div class="row" >
+
+
+					<!-- row -->
+					<div class="row" >
+						{% if quize_data.count == 0 %}
+							<div style="background:#eee; padding:10px;border-left:4px solid red;"> No Quize Available </div>
+							{% endif %}
+						{% for quize_data in quize_data %}
+						<!-- single course -->
+						<div class="col-md-3 col-sm-6 col-xs-6 shadow m-1" >
+							<div class="course" >
+								<a href="{% url 'start-quize' quize_id=quize_data.id %}" class="course-img">
+									<i class="course-link-icon fa fa-link"></i>
+								</a>
+								<a class="course-title" href="#">{{quize_data.quize_name}}</a>
+								<div class="course-details">
+									<span class="course-category">Web Development</span>
+									<span class="course-price course-free"><a href="{% url 'start-quize' quize_id=quize_data.id %}" class="btn btn-primary">Start <i class="fa fa-arrow-right"></i></a> </span>
+								</div>
+							</div>
+						</div>
+						<!-- /single course -->
+						{% endfor %}
+
+
+
+
+
+					</div>
+					<!-- /row -->
+
+				</div>
+				<!-- /courses -->
+
+
+{% endblock body_data %}

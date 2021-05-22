@@ -1,0 +1,326 @@
+{% load static %}
+{% load post_tags %}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+		<title>HTML Education Template</title>
+
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+		<!-- Google font -->
+		<link href="https://fonts.googleapis.com/css?family=Lato:700%7CMontserrat:400,600" rel="stylesheet">
+
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+
+
+<style>
+	@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+body {
+    background-color: #333
+}
+
+.container {
+    background-color: #555;
+    color: #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    font-family: 'Montserrat', sans-serif;
+    max-width: 700px
+}
+
+.container>p {
+    font-size: 32px
+}
+
+.question {
+    width: 75%
+}
+
+.options {
+    position: relative;
+    padding-left: 40px
+}
+
+#options label {
+    display: block;
+    margin-bottom: 15px;
+    font-size: 14px;
+    cursor: pointer
+}
+
+.options input {
+    opacity: 0
+}
+
+.checkmark {
+    position: absolute;
+    top: -1px;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #555;
+    border: 1px solid #ddd;
+    border-radius: 50%
+}
+
+.options input:checked~.checkmark:after {
+    display: block
+}
+
+.options .checkmark:after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    display: block;
+    background: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 600ms ease-in-out 0s
+}
+
+.options input[type="radio"]:checked~.checkmark {
+    background: #21bf73;
+    transition: 300ms ease-in-out 0s
+}
+
+.options input[type="radio"]:checked~.checkmark:after {
+    transform: translate(-50%, -50%) scale(1)
+}
+
+.btn-primary {
+    background-color: #555;
+    color: #ddd;
+    border: 1px solid #ddd
+}
+
+.btn-primary:hover {
+    background-color: #21bf73;
+    border: 1px solid #21bf73
+}
+
+.btn-success {
+    padding: 5px 25px;
+    background-color: #21bf73
+}
+.navmenu-1{
+    display: none;
+    width:100%;
+    }
+.navmenu-2{
+    display: block;
+
+    }
+
+@media(max-width:576px) {
+    .question {
+        width: 100%;
+        word-spacing: 2px
+    }
+    .navmenu-1{
+    display: block;
+    width:100%;
+    }
+    .navmenu-2{
+    display: none;
+
+    }
+}
+
+
+ #button{
+  display:block;
+  margin:20px auto;
+  padding:10px 30px;
+  background-color:#eee;
+  border:solid #ccc 1px;
+  cursor: pointer;
+}
+#overlay{
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height:100%;
+  display: none;
+  background: rgba(0,0,0,0.6);
+}
+.cv-spinner {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px #ddd solid;
+  border-top: 4px #2e93e6 solid;
+  border-radius: 50%;
+  animation: sp-anime 0.8s infinite linear;
+}
+@keyframes sp-anime {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.is-hide{
+  display:none;
+}
+
+</style>
+
+
+ </head>
+	<body>
+
+
+<div id="overlay">
+      <div class="cv-spinner">
+        <span class="spinner"></span>
+      </div>
+  </div>
+
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+
+	<a href="{% url 'certificate' %}" style="max-width:44px;" class="btn btn-light shadow rounded-pill m-1 pull-left fixed-top"><i class="fa fa-arrow-left"></i></a>
+
+<br>
+<div class="container bg-light shadow p-4">
+    <center><span class="text-dark h4 text-center">Apply For Certificate</span></center><br>
+    {% for messages in messages %}
+    <div class="text-danger text-sm">
+        {{message}}
+    </div>
+    {% endfor %}
+    <form action="{% url 'apply-for-certificate' %}" method="POST">
+        {% csrf_token %}
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Select Course</label>
+    <select name="course_name" class="form-control" id="exampleFormControlSelect1">
+        {% for user_course in user_course %}
+          {% for course in course  %}
+        {% ifequal  user_course.course_id|tostr course.id|tostr %}
+        <option>{{ course.course_name }}</option>
+        {% endifequal %}
+        {% endfor  %}
+        {% endfor  %}
+    </select>
+  </div>
+
+       <p>
+           <span class="text-sm text-danger"> Please Read All Details Before Applying For Certificate</span>
+          <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Read T&C</button>
+       </p>
+        <div class="collapse" id="collapseExample">
+          <div class="card card-body text-dark ">
+              <ol class="p-3">
+                  <li>You Need Complete The Course Before Applying (At Last Lesson You Will See To Mark as Completed )</li>
+                  <li>Here Only Completed Course Will Show</li>
+                  <li>After We Have Recived Your Details We Call You And Ask Some Question </li>
+                  <li>And We Will Provide You The Certificate According To Your Answer  </li>
+                  <li>You Will Get A Badge According To Your Knowladge  </li>
+              </ol>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-dark">Apply</button>
+</form>
+</div>
+
+
+<!-- Latest compiled and minified JavaScript -->
+
+
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+
+
+		<script >
+    $(document).ready(function(){
+        $("#save_ans_btn").click(function(){
+        if( $("input:radio[name=option]").is(":checked") !=""){
+            var ans_id=$("input:radio[name=option]:checked").val()
+            var ques_id=$('#question_id').val();
+            var quize_id=$('#quize_id').val();
+			   $.ajax({
+                     'url':'{% url 'save_ans' %}',
+                     'method':'GET',
+                     'data':{
+                        'answer_id':ans_id,
+                        'question_id':ques_id,
+                        'quize_id':quize_id,
+                     },
+                     'beforeSend': function () { // Before we send the request, remove the .hidden class from the spinner and default to inline-block.
+                        $("#overlay").fadeIn(300);　
+                         },
+                     'success':function(data){
+                     $("#overlay").fadeOut(300);
+                          $('#msg').text(data.msg);
+                          $("#myModal").modal('show');
+                     },
+                });//end of login_ajax
+        }
+        else{
+           $('#msg').text('At least Select One Answer To Save ');
+            $("#myModal").modal('show');
+        }
+        });
+        $("#close_model").click(function(){
+                $("#myModal").modal('hide');
+            });//close model function
+
+        //code for counter
+
+
+    });
+</script>
+
+
+	</body>
+</html>

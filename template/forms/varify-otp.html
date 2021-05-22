@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+
+    <meta name="description" content="Colorlib Templates">
+    <meta name="author" content="Colorlib">
+    <meta name="keywords" content="Colorlib Templates">
+
+    <!-- Title Page-->
+    <title>Register Forms</title>
+
+    <!-- Icons font CSS-->
+    <link href="{% static 'rgcss/vendor/mdi-font/css/material-design-iconic-font.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'rgcss/vendor/font-awesome-4.7/css/font-awesome.min.css' %}" rel="stylesheet" media="all">
+    <!-- Font special for pages-->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- {% static 'rgcss/vendor CSS-->
+    <link href="{% static 'rgcss/vendor/select2/select2.min.css' %}" rel="stylesheet" media="all">
+    <link href="{% static 'rgcss/vendor/datepicker/daterangepicker.css' %}" rel="stylesheet" media="all">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <!-- Main CSS-->
+    <link href="{% static 'rgcss/css/main.css' %}" rel="stylesheet" media="all">
+          <style>
+#button{
+  display:block;
+  margin:20px auto;
+  padding:10px 30px;
+  background-color:#eee;
+  border:solid #ccc 1px;
+  cursor: pointer;
+}
+#overlay{
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height:100%;
+  display: none;
+  background: rgba(0,0,0,0.6);
+}
+.cv-spinner {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px #ddd solid;
+  border-top: 4px #2e93e6 solid;
+  border-radius: 50%;
+  animation: sp-anime 0.8s infinite linear;
+}
+@keyframes sp-anime {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.is-hide{
+  display:none;
+}
+</style>
+</head>
+
+<body>
+<div id="overlay">
+      <div class="cv-spinner">
+        <span class="spinner"></span>
+      </div>
+  </div>
+    <div class="page-wrapper bg-gra-02 p-t-30  font-poppins">
+        <div class="wrapper wrapper--w680">
+            <div class="card card-4">
+                <div class="card-body">
+                    <h2 class="title">OTP Verification</h2>
+                    <form id="form" onsubmit="event.preventDefault(); check();" >
+                         {% csrf_token %}
+                          <div class="input-group">
+                                    <label class="label">Enter One Time Password</label>
+                                    <input class="input--style-4 pass"  type="number" id="otp" name="otp" required>
+                                    <i class="  p-t-30 input-icon fa fa-lock"></i>
+                          </div>
+
+                        <div class="p-t-15">
+                            <input type="button" id="otp_btn" class="btn btn--radius-2 btn--blue" value="Submit">
+                        </div>
+                        Did not Recive OTP ?<button type="button" class="btn text-dark text-decoration-none" id="resend_otp">Resend</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+      <!-- Modal HTML -->
+    <div id="myModal" tabindex="-1"  class="modal fade " >
+        <div class="modal-dialog" style=" margin-top:3%;max-width:35rem;width:90%;" >
+            <div class="modal-content">
+                <div class="modal-body">
+                     <button type="button" class="close" id="close_model" >&times;</button>
+                <center>
+               <div class="h6">MESSAGE :<hr> </div>
+                   <div id="msg"></div><br>
+                </center>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery JS-->
+
+
+    <script src="{% static 'rgcss/vendor/jquery/jquery.min.js' %}"></script>
+    <!-- {% static 'rgcss/vendor JS-->
+    <script src="{% static 'rgcss/vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'rgcss/vendor/datepicker/moment.min.js' %}"></script>
+    <script src="{% static 'rgcss/vendor/datepicker/daterangepicker.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+
+        $("#resend_otp").click(function(){
+                var otp=$("#otp").val();
+                const my_data={otp_from_user:otp,"csrfmiddlewaretoken":$('input[name=csrfmiddlewaretoken]').val()};
+                console.log(my_data);
+                $.ajax({
+                     'url':'{% url 'resend-reg-otp' %}',
+                     'method':'POST',
+                     'data':my_data,
+                     'beforeSend': function () {
+                        $("#overlay").fadeIn(300);　
+                         },
+                     'success':function(data){
+                      $("#overlay").fadeOut(300);
+                      if(data.status==0){
+                       $('#msg_img_failed').hide();
+                          $('#msg_img_success').show();
+                          $('#msg').text(data.msg);
+                          $("#myModal").modal('show');
+                       }//end of if success
+                       else if(data.status==1){
+                           $('#msg').text(data.msg);
+                           $("#myModal").modal('show');
+                       }
+                       else{
+                         $('#msg').text(data.msg);
+                           $("#myModal").modal('show');
+                       }
+                     },
+                });//end of register ajax
+
+            });//end of resend otp
+
+
+            function check(){
+               var otp=$("#otp").val();
+                const my_data={otp_from_user:otp,"csrfmiddlewaretoken":$('input[name=csrfmiddlewaretoken]').val()};
+                console.log(my_data);
+                $.ajax({
+                     'url':'{% url 'verify-otp' %}',
+                     'method':'POST',
+                     'data':my_data,
+                     'beforeSend': function () {
+                        $("#overlay").fadeIn(300);　
+                         },
+                     'success':function(data){
+                      $("#overlay").fadeOut(300);
+                      if(data.status==0){
+                       $('#msg_img_failed').hide();
+                          $('#msg_img_success').show();
+                          setTimeout(function(){
+                                window.location.href = 'login';
+                          }, 2000);
+                          $('#msg').text(data.msg);
+                          $("#myModal").modal('show');
+                       }//end of if success
+                       else if(data.status==1){
+                           $('#msg').text(data.msg);
+                           $("#myModal").modal('show');
+                       }
+                       else{
+                         $('#msg').text(data.msg);
+                           $("#myModal").modal('show');
+                       }
+                     },
+                });//end of register ajax
+            }
+            $("form").submit(function(){
+               check();
+            });//end of register
+            $("#otp_btn").click(function(){
+               check();
+            });//end of register
+
+            $("#close_model").click(function(){
+                $("#myModal").modal('hide');
+            });//close model function
+
+        });//end of duocument
+    </script>
+<!-- Main JS-->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+  </body>
+</html>
