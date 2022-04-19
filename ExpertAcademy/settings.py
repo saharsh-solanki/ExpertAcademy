@@ -86,10 +86,21 @@ WSGI_APPLICATION = 'ExpertAcademy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "dccku3rdi6v2e6",
+        'USER': 'caajbvxottogvq',
+        'PASSWORD': '3c140a963b0ce32b80f18071c23bb843ea7fb51abfe9fcac61f1ac3cb916dc00',
+        'HOST': "ec2-54-225-228-142.compute-1.amazonaws.com",
+        'PORT': '5432',
     }
 }
 
