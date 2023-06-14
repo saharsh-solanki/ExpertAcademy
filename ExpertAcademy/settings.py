@@ -96,13 +96,14 @@ WSGI_APPLICATION = 'ExpertAcademy.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': "dccku3rdi6v2e6",
-        'USER': 'caajbvxottogvq',
-        'PASSWORD': '3c140a963b0ce32b80f18071c23bb843ea7fb51abfe9fcac61f1ac3cb916dc00',
-        'HOST': "ec2-54-225-228-142.compute-1.amazonaws.com",
-        'PORT': '5432',
+        'NAME': os.getenv("DATABASE_NAME","expert_academy"),
+        'USER': os.getenv("DATABASE_USER","postgres"),
+        'PASSWORD': os.getenv("DATABASE_PASSWORD","postgres"),
+        'HOST': os.getenv("DATABASE_HOST","db"),
+        'PORT': os.getenv("DATABASE_PORT",5432),
     }
 }
+
 
 
 # Password validation

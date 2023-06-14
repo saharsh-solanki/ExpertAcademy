@@ -1,0 +1,17 @@
+version: '3'
+services:
+  web:
+    build: .
+    environment:
+      DATABASE_HOST: database
+    depends_on: 
+      - database
+    ports: 
+      - "8000:8000"
+
+  database:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: expert_academy
+      
